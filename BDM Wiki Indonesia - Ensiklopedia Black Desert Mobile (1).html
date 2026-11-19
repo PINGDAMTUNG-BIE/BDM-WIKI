@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Desert Mobile — BDM Wiki Indonesia</title>
+    <!-- Google Fonts: Inter untuk UI modern & Merriweather untuk judul klasik Wikipedia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Konfigurasi Tailwind CSS untuk mendukung Dark Mode berbasis class dan Font kustom
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Merriweather', 'Georgia', 'Times New Roman', 'serif'],
+                    },
+                    colors: {
+                        wiki: {
+                            bg: '#ffffff',
+                            sidebar: '#f8f9fa',
+                            border: '#a2a9b1',
+                            borderLight: '#eaecf0',
+                            link: '#3366cc',
+                            linkHover: '#447ff5',
+                            text: '#202122',
+                            muted: '#54595d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-wiki-sidebar text-wiki-text dark:bg-slate-950 dark:text-slate-200 font-sans antialiased transition-colors duration-200 selection:bg-blue-200 dark:selection:bg-amber-500/30">
+
+    <!-- ===================================================================== -->
+    <!-- HEADER NAVIGASI WIKIPEDIA & LIVE SEARCH                               -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-gray-300 dark:border-slate-800 shadow-sm">
+        <div class="max-w-[1440px] mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
+            
+            <!-- Kiri: Tombol Menu Mobile & Logo Wiki -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button id="mobileMenuBtn" type="button" aria-label="Buka Navigasi" class="lg:hidden p-2 rounded-lg text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+
+                <a href="#top" class="flex items-center gap-2.5 group">
+                    <!-- Logo SVG Kustom: Bola Dunia Wiki + Siluet Black Spirit BDM -->
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-slate-800 via-slate-900 to-amber-700 dark:from-amber-500 dark:to-purple-900 p-0.5 shadow-sm flex items-center justify-center shrink-0">
+                        <div class="w-full h-full rounded-full bg-white dark:bg-slate-950 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-slate-900 dark:text-amber-400" viewBox="0 0 36 36" fill="none">
+                                <circle cx="18" cy="18" r="15" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+                                <path d="M11 21C11 14.5 14.2 10 18 10C21.8 10 25 14.5 25 21C25 24.5 22 26.5 18 26.5C14 26.5 11 24.5 11 21Z" fill="currentColor"/>
+                                <path d="M14.2 18.5L16.5 19.5L14.2 20.5Z" fill="#ef4444"/>
+                                <path d="M21.8 18.5L19.5 19.5L21.8 20.5Z" fill="#ef4444"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="block font-serif font-bold text-base sm:text-lg tracking-tight text-gray-900 dark:text-white group-hover:text-wiki-link dark:group-hover:text-amber-400 transition-colors">
+                            BDM Wiki <span class="text-xs font-sans font-semibold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-amber-300 border border-gray-300 dark:border-slate-700">ID</span>
+                        </span>
+                        <span class="hidden sm:block text-[11px] text-gray-500 dark:text-slate-400">Ensiklopedia Bebas Black Desert Mobile</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Tengah: Kolom Pencarian Real-Time (Live Search) -->
+            <div class="relative flex-1 max-w-xl mx-2">
+                <div class="relative flex items-center">
+                    <svg class="w-4 h-4 text-gray-400 dark:text-slate-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input 
+                        id="globalSearchInput" 
+                        type="text" 
+                        autocomplete="off"
+                        placeholder="Cari item, wilayah, class, boss, atau mekanika BDM..." 
+                        class="w-full pl-9 pr-16 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/90 text-gray-900 dark:text-slate-100 placeholder-gray-500 dark:placeholder-slate-400 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-wiki-link dark:focus:ring-amber-500 transition-all"
+                    >
+                    <button id="clearSearchBtn" type="button" class="hidden absolute right-2 text-xs px-2 py-1 rounded bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600">
+                        Hapus
+                    </button>
+                </div>
+
+                <!-- Popover Hasil Live Search -->
+                <div id="liveSearchResults" class="hidden absolute left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl shadow-2xl max-h-96 overflow-y-auto z-50 divide-y divide-gray-100 dark:divide-slate-800">
+                    <!-- Hasil pencarian dirender secara dinamis oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Kanan: Tombol Tambah Konten Wiki & Pengalih Tema -->
+            <div class="flex items-center gap-2 shrink-0">
+                <button id="openEditorBtnHeader" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-lg bg-wiki-link hover:bg-wiki-linkHover dark:bg-amber-600 dark:hover:bg-amber-500 text-white shadow-sm transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span class="hidden md:inline">Tambah / Update Wiki</span>
+                    <span class="md:hidden">Update</span>
+                </button>
+
+                <button id="themeToggleBtn" type="button" title="Ubah Tema Terang / Gelap" class="p-2 rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-amber-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                    <!-- Icon Matahari (Muncul di Dark Mode) -->
+                    <svg id="sunIcon" class="hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <!-- Icon Bulan (Muncul di Light Mode) -->
+                    <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- OVERLAY SIDEBAR MOBILE                                                -->
+    <!-- ===================================================================== -->
+    <div id="sidebarBackdrop" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-xs"></div>
+
+    <!-- ===================================================================== -->
+    <!-- TATA LETAK UTAMA WIKIPEDIA (SIDEBAR KIRI + ARTIKEL TENGAH)            -->
+    <!-- ===================================================================== -->
+    <div id="top" class="max-w-[1440px] mx-auto flex min-h-screen">
+
+        <!-- SIDEBAR NAVIGASI KIRI -->
+        <aside id="leftSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-wiki-sidebar dark:bg-slate-900 border-r border-gray-300 dark:border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static lg:block shrink-0 transition-transform duration-200 ease-in-out overflow-y-auto">
+            <div class="p-4 space-y-6">
+                
+                <!-- Header Drawer Mobile -->
+                <div class="flex items-center justify-between lg:hidden pb-3 border-b border-gray-300 dark:border-slate-800">
+                    <span class="font-serif font-bold text-base text-gray-900 dark:text-white">Menu Ensiklopedia</span>
+                    <button id="closeSidebarBtn" type="button" class="p-1.5 rounded-lg text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navigasi Bagian Artikel -->
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 pb-1.5 mb-2 border-b border-gray-300 dark:border-slate-800">
+                        Navigasi Artikel
+                    </h3>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="#ikhtisar" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Halaman Utama & Ikhtisar</a></li>
+                        <li><a href="#mekanika" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Mekanika Permainan</a></li>
+                        <li><a href="#wilayah" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Wilayah & Peta Dunia</a></li>
+                        <li><a href="#database-item" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Database Item & Gear</a></li>
+                        <li><a href="#kelas-karakter" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Kelas Karakter (Classes)</a></li>
+                        <li><a href="#world-boss" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">World Boss & Endgame</a></li>
+                        <li><a href="#update-patch" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Update & Patch Notes</a></li>
+                        <li><a href="#panduan-dev" class="sidebar-link block px-2.5 py-1.5 rounded-md text-wiki-link dark:text-sky-400 hover:bg-gray-200/70 dark:hover:bg-slate-800">Arsitektur & Dev Wiki</a></li>
+                    </ul>
+                </div>
+
+                <!-- Statistik Database Real-Time -->
+                <div class="p-3 rounded-lg bg-white dark:bg-slate-800/70 border border-gray-300 dark:border-slate-700 text-xs space-y-2">
+                    <div class="font-semibold text-gray-800 dark:text-slate-200 border-b border-gray-200 dark:border-slate-700 pb-1">
+                        Statistik BDM Wiki
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-slate-400">Total Wilayah:</span>
+                        <span id="statRegionCount" class="font-bold text-gray-900 dark:text-amber-400">10</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-slate-400">Database Item:</span>
+                        <span id="statItemCount" class="font-bold text-gray-900 dark:text-amber-400">27</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-slate-400">Kelas Karakter:</span>
+                        <span id="statClassCount" class="font-bold text-gray-900 dark:text-amber-400">14</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-slate-400">Catatan Update:</span>
+                        <span id="statUpdateCount" class="font-bold text-gray-900 dark:text-amber-400">6</span>
+                    </div>
+                </div>
+
+                <!-- Peralatan Kontributor Wiki -->
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 pb-1.5 mb-2 border-b border-gray-300 dark:border-slate-800">
+                        Peralatan Kontributor
+                    </h3>
+                    <div class="space-y-2 text-xs">
+                        <button id="sidebarAddBtn" type="button" class="w-full text-left px-2.5 py-2 rounded-md bg-blue-50 dark:bg-slate-800 text-wiki-link dark:text-amber-400 font-medium hover:bg-blue-100 dark:hover:bg-slate-700 transition-colors">
+                            + Tambah Konten / Patch
+                        </button>
+                        <button id="copyWikiLinkBtn" type="button" class="w-full text-left px-2.5 py-2 rounded-md text-gray-700 dark:text-slate-300 hover:bg-gray-200/70 dark:hover:bg-slate-800 transition-colors">
+                            Salin Tautan Artikel
+                        </button>
+                        <button id="resetCustomDataBtn" type="button" class="w-full text-left px-2.5 py-2 rounded-md text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors">
+                            Reset Data Komunitas
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- KONTEN UTAMA ENSIKLOPEDIA -->
+        <main class="flex-1 bg-white dark:bg-slate-900/60 border-x border-gray-300 dark:border-slate-800 px-4 sm:px-8 lg:px-10 py-6 max-w-full overflow-x-hidden">
+
+            <!-- Header Judul Artikel Khas Wikipedia -->
+            <div class="border-b border-gray-300 dark:border-slate-700 pb-3 mb-5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h1 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+                        Black Desert Mobile
+                    </h1>
+                    <div class="flex items-center gap-1.5 text-xs">
+                        <span class="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 font-medium text-gray-700 dark:text-slate-300">
+                            Artikel Terverifikasi
+                        </span>
+                        <button id="editArticleTabBtn" type="button" class="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-amber-500/10 border border-blue-200 dark:border-amber-500/30 text-wiki-link dark:text-amber-400 font-medium hover:underline">
+                            Sunting / Tambah Data
+                        </button>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                    Dari <strong>BDM Wiki Indonesia</strong>, ensiklopedia bebas komunitas petualang Elion & Hadum.
+                </p>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- INFOBOX WIKIPEDIA (KANAN ATAS PADA DESKTOP, ATAS PADA MOBILE)     -->
+            <!-- ================================================================= -->
+            <aside class="w-full lg:w-80 lg:float-right lg:ml-6 mb-6 rounded-xl border border-gray-300 dark:border-slate-700 bg-wiki-sidebar dark:bg-slate-900 shadow-sm overflow-hidden text-sm">
+                <div class="bg-gray-200/80 dark:bg-slate-800 px-4 py-2.5 text-center border-b border-gray-300 dark:border-slate-700">
+                    <h2 class="font-serif font-bold text-base text-gray-900 dark:text-white">Black Desert Mobile</h2>
+                    <p class="text-[11px] text-gray-600 dark:text-slate-400">검은사막 모바일 (Geomeunsamag Mobail)</p>
+                </div>
+
+                <!-- Ilustrasi SVG Kustom Emblem Game -->
+                <div class="p-4 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-950 flex flex-col items-center justify-center border-b border-gray-300 dark:border-slate-700">
+                    <svg class="w-24 h-24 text-amber-400 drop-shadow" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.4"/>
+                        <circle cx="50" cy="50" r="36" stroke="#ef4444" stroke-width="1" stroke-dasharray="4 3"/>
+                        <!-- Siluet Black Spirit -->
+                        <path d="M30 62C30 40 39 26 50 26C61 26 70 40 70 62C70 72 62 78 50 78C38 78 30 72 30 62Z" fill="#090d16" stroke="#f59e0b" stroke-width="2"/>
+                        <!-- Mata Merah Menyala -->
+                        <path d="M38 52L46 56L38 59Z" fill="#ef4444"/>
+                        <path d="M62 52L54 56L62 59Z" fill="#ef4444"/>
+                        <!-- Mahkota / Tanduk Energi -->
+                        <path d="M42 28L38 18L47 25M58 28L62 18L53 25" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span class="mt-2 text-[11px] tracking-widest uppercase text-amber-300/90 font-semibold">Pearl Abyss Proprietary Engine</span>
+                </div>
+
+                <!-- Tabel Metadata Infobox -->
+                <table class="w-full text-xs border-collapse">
+                    <tbody class="divide-y divide-gray-200 dark:divide-slate-800">
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 w-2/5 bg-gray-100/60 dark:bg-slate-800/40">Pengembang</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Pearl Abyss</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Penerbit</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Pearl Abyss</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Genre</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Action MMORPG, Sandbox</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Platform</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Android &amp; iOS</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Rilis Global</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Desember 2019 (11 Des 2019)</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Engine</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Proprietary Engine (Pearl Abyss)</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Mode</th>
+                            <td class="py-2 px-3 text-gray-900 dark:text-slate-200">Multiplayer Masif (PvE, PvP, RvR)</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 px-3 text-left font-semibold text-gray-700 dark:text-slate-300 bg-gray-100/60 dark:bg-slate-800/40">Status</th>
+                            <td class="py-2 px-3">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Aktif
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </aside>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 1: IKHTISAR & DAFTAR ISI                                   -->
+            <!-- ================================================================= -->
+            <section id="ikhtisar" class="space-y-4 text-sm sm:text-base leading-relaxed text-gray-800 dark:text-slate-200">
+                <p>
+                    <strong>Black Desert Mobile</strong> (disingkat <strong>BDM</strong>) adalah permainan peran daring multipemain masif (<em>Action MMORPG</em>) yang dikembangkan dan diterbitkan oleh studio asal Korea Selatan, <strong>Pearl Abyss</strong>. Diadaptasi dari versi PC <em>Black Desert Online</em> yang diakui secara global, gim ini menggunakan mesin grafis internal (<em>Proprietary Engine</em>) untuk menghadirkan visual beresolusi tinggi, kustomisasi karakter mendetail, serta sistem pertarungan aksi cepat (<em>non-target action combat</em>) pada perangkat seluler <strong>Android</strong> dan <strong>iOS</strong>.
+                </p>
+                <p>
+                    Berlatar di dunia fantasi tinggi yang berpusat pada konflik memperebutkan <strong>Black Stone</strong>—sumber energi kuno yang ditemukan di Gurun Hitam antara Kerajaan Valencia dan Republik Calpheon—pemain berperan sebagai seorang petualang yang kehilangan ingatan dan terikat kontrak misterius dengan entitas bayangan bernama <strong>Black Spirit (Roh Hitam)</strong>. Seiring perkembangan pembaruan global, petualangan meluas melintasi dimensi kegelapan <em>Hadum's Realm</em>, hamparan pasir <em>Great Desert</em>, samudra luas <em>Great Ocean</em>, hingga benua timur <em>Land of the Morning Light</em>.
+                </p>
+
+                <!-- Kotak Daftar Isi (Table of Contents) Khas Wikipedia -->
+                <nav aria-label="Daftar Isi" class="inline-block w-full sm:w-auto min-w-[280px] max-w-md my-4 p-4 rounded-xl bg-wiki-sidebar dark:bg-slate-800/80 border border-gray-300 dark:border-slate-700">
+                    <div class="flex items-center justify-between gap-4 pb-2 mb-2 border-b border-gray-300 dark:border-slate-700">
+                        <span class="font-bold text-sm text-gray-900 dark:text-white">Daftar Isi</span>
+                        <button id="toggleTocBtn" type="button" class="text-xs text-wiki-link dark:text-sky-400 hover:underline">
+                            [sembunyikan]
+                        </button>
+                    </div>
+                    <ol id="tocList" class="space-y-1.5 text-xs sm:text-sm text-wiki-link dark:text-sky-400">
+                        <li><a href="#ikhtisar" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">1</span> Ikhtisar</a></li>
+                        <li><a href="#mekanika" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">2</span> Mekanika Utama Permainan</a></li>
+                        <li><a href="#wilayah" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">3</span> Daftar Wilayah &amp; Peta Dunia</a></li>
+                        <li><a href="#database-item" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">4</span> Database Item &amp; Equipment Lengkap</a></li>
+                        <li><a href="#kelas-karakter" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">5</span> Kelas Karakter (Classes)</a></li>
+                        <li><a href="#world-boss" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">6</span> World Boss &amp; Konten Endgame</a></li>
+                        <li><a href="#update-patch" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">7</span> Update Terbaru &amp; Patch Notes</a></li>
+                        <li><a href="#panduan-dev" class="hover:underline"><span class="text-gray-500 dark:text-slate-400 mr-1.5">8</span> Arsitektur Teknis &amp; Pengembangan Wiki</a></li>
+                    </ol>
+                </nav>
+            </section>
+
+            <div class="clear-both"></div>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 2: MEKANIKA UTAMA PERMAINAN                                -->
+            <!-- ================================================================= -->
+            <section id="mekanika" class="mt-8 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    2. Mekanika Utama Permainan
+                </h2>
+                <p class="text-sm text-gray-700 dark:text-slate-300 mb-5">
+                    Berbeda dengan MMORPG seluler konvensional yang hanya bertumpu pada satu karakter, <em>Black Desert Mobile</em> menggabungkan aksi pertarungan presisi tinggi dengan progresi akun terpadu (<em>Family System</em>) dan simulasi manajemen wilayah.
+                </p>
+
+                <div id="mechanicsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dirender otomatis dari data JavaScript -->
+                </div>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 3: DAFTAR WILAYAH & PETA DUNIA                             -->
+            <!-- ================================================================= -->
+            <section id="wilayah" class="mt-10 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                        3. Daftar Wilayah &amp; Peta Dunia
+                    </h2>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="regionTierFilter" class="text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-wiki-link">
+                            <option value="all">Semua Rentang CP</option>
+                            <option value="early">Pemula (1.000 – 14.000 CP)</option>
+                            <option value="mid">Menengah (12.000 – 46.000 CP)</option>
+                            <option value="endgame">Endgame (42.000 – 85.000+ CP)</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-700 dark:text-slate-300 mb-5">
+                    Dunia BDM terbagi menjadi sepuluh wilayah besar dengan ekosistem, lore politik, kota pusat perdagangan, serta monster dan bos yang membutuhkan rekomendasi <strong>Combat Power (CP)</strong> berbeda.
+                </p>
+
+                <div id="regionsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Dirender otomatis dari data JavaScript + localStorage -->
+                </div>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 4: DATABASE ITEM & EQUIPMENT LENGKAP                       -->
+            <!-- ================================================================= -->
+            <section id="database-item" class="mt-10 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                        4. Database Item &amp; Equipment Lengkap
+                    </h2>
+                    <span id="itemFilterCounter" class="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700">
+                        Menampilkan 27 item
+                    </span>
+                </div>
+
+                <!-- Panel Kontrol Filter Item (Pencarian Lokal, Kategori, & Tier Kelangkaan) -->
+                <div class="p-4 rounded-xl bg-wiki-sidebar dark:bg-slate-800/70 border border-gray-300 dark:border-slate-700 mb-5 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Input Pencarian Khusus Item -->
+                        <div>
+                            <label for="itemSearchInput" class="block text-xs font-semibold text-gray-600 dark:text-slate-400 mb-1">Cari Nama / Fungsi Item</label>
+                            <input id="itemSearchInput" type="text" placeholder="Contoh: Blackstar, Ah'krad, Sushi, Chaos..." class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-wiki-link">
+                        </div>
+
+                        <!-- Filter Kategori -->
+                        <div>
+                            <label for="itemCategoryFilter" class="block text-xs font-semibold text-gray-600 dark:text-slate-400 mb-1">Filter Kategori Equipment</label>
+                            <select id="itemCategoryFilter" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-wiki-link">
+                                <option value="all">Semua Kategori</option>
+                                <option value="Senjata & Armor">Senjata &amp; Armor</option>
+                                <option value="Aksesoris & Relic">Aksesoris &amp; Relic</option>
+                                <option value="Item Penting & Material">Item Penting &amp; Material</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Filter Tingkat Kelangkaan (Tier BDM) -->
+                    <div>
+                        <span class="block text-xs font-semibold text-gray-600 dark:text-slate-400 mb-1.5">Filter Tingkat Kelangkaan (Tier Grade)</span>
+                        <div id="tierFilterButtons" class="flex flex-wrap gap-1.5">
+                            <button type="button" data-tier="all" class="tier-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-white dark:bg-amber-500 dark:text-slate-950 border border-transparent transition-all">
+                                Semua Tier
+                            </button>
+                            <button type="button" data-tier="Mystical" class="tier-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-500/15 text-orange-700 dark:text-orange-300 border border-orange-400/50 hover:bg-orange-500/25 transition-all">
+                                Mystical (Oranye)
+                            </button>
+                            <button type="button" data-tier="Abyssal" class="tier-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-700 dark:text-red-300 border border-red-400/50 hover:bg-red-500/25 transition-all">
+                                Abyssal (Merah)
+                            </button>
+                            <button type="button" data-tier="Primal" class="tier-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-pink-500/15 text-pink-700 dark:text-pink-300 border border-pink-400/50 hover:bg-pink-500/25 transition-all">
+                                Primal (Pink)
+                            </button>
+                            <button type="button" data-tier="Chaos" class="tier-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border border-cyan-400/50 hover:bg-cyan-500/25 transition-all">
+                                Chaos (Biru Kehijauan)
+                            </button>
+                            <button type="button" data-tier="Eternal" class="tier-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-500/15 text-purple-800 dark:text-purple-300 border border-amber-400/70 hover:bg-purple-500/25 transition-all">
+                                Eternal (Ungu Emas)
+                            </button>
+                            <button type="button" data-tier="Dawnveil" class="tier-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/20 text-amber-800 dark:text-amber-200 border border-amber-500 hover:bg-amber-500/30 transition-all">
+                                Dawnveil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Kartu Database Item -->
+                <div id="itemsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    <!-- Dirender otomatis dari data JavaScript + localStorage -->
+                </div>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 5: KELAS KARAKTER (CLASSES)                                -->
+            <!-- ================================================================= -->
+            <section id="kelas-karakter" class="mt-10 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                        5. Kelas Karakter (Classes)
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <select id="classTypeFilter" class="text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-200">
+                            <option value="all">Semua Tipe Evolusi</option>
+                            <option value="Ascension / Awakening">Ascension &amp; Awakening (Cabang)</option>
+                            <option value="Direct Ascension">Direct Ascension (Kelas Khusus)</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-700 dark:text-slate-300 mb-5">
+                    Setiap kelas memiliki gaya bertarung unik, kombinasi senjata utama &amp; sekunder, serta jalur evolusi <strong>Ascension</strong> (mempertajam gaya bertarung asli) maupun <strong>Awakening</strong> (membuka senjata dan kekuatan baru).
+                </p>
+
+                <div id="classesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dirender otomatis dari data JavaScript -->
+                </div>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 6: WORLD BOSS & KONTEN ENDGAME                             -->
+            <!-- ================================================================= -->
+            <section id="world-boss" class="mt-10 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    6. World Boss &amp; Konten Endgame
+                </h2>
+                <p class="text-sm text-gray-700 dark:text-slate-300 mb-5">
+                    Untuk mendapatkan material tingkat tinggi seperti <em>Voidsent Eye</em>, <em>Chaos Jewel</em>, serta sumber daya untuk merakit <em>Dawnveil Gear</em>, pemain wajib menaklukkan World Boss terjadwal serta konten tim <em>Family</em> tingkat lanjut.
+                </p>
+
+                <div id="bossesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Dirender otomatis dari data JavaScript -->
+                </div>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 7: UPDATE TERBARU & PATCH NOTES + EDITOR WIKI INTERAKTIF   -->
+            <!-- ================================================================= -->
+            <section id="update-patch" class="mt-10 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    <div>
+                        <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                            7. Update Terbaru &amp; Patch Notes
+                        </h2>
+                        <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+                            Catatan pembaruan konten resmi &amp; kontribusi komunitas (tersimpan lokal di browser Anda).
+                        </p>
+                    </div>
+                    <button id="openEditorBtnSection" type="button" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        + Tambah / Update Konten Wiki
+                    </button>
+                </div>
+
+                <!-- Filter Kategori Patch Notes -->
+                <div class="flex flex-wrap items-center gap-2 mb-5">
+                    <button type="button" data-patch-cat="all" class="patch-cat-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-white dark:bg-amber-500 dark:text-slate-950">
+                        Semua Update
+                    </button>
+                    <button type="button" data-patch-cat="Item Baru" class="patch-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700">
+                        Item Baru
+                    </button>
+                    <button type="button" data-patch-cat="Wilayah Baru" class="patch-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700">
+                        Wilayah Baru
+                    </button>
+                    <button type="button" data-patch-cat="Class Baru" class="patch-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700">
+                        Class Baru
+                    </button>
+                    <button type="button" data-patch-cat="Balance Patch" class="patch-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700">
+                        Balance Patch
+                    </button>
+                </div>
+
+                <!-- Timeline List Patch Notes -->
+                <div id="updatesList" class="space-y-3">
+                    <!-- Dirender otomatis dari data JavaScript + localStorage -->
+                </div>
+            </section>
+
+            <!-- ================================================================= -->
+            <!-- BAGIAN 8: ARSITEKTUR KODE & PANDUAN PENGEMBANGAN WIKI             -->
+            <!-- ================================================================= -->
+            <section id="panduan-dev" class="mt-10 pt-4 border-t border-gray-300 dark:border-slate-700">
+                <h2 class="font-serif text-xl sm:text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-slate-800 pb-2 mb-4">
+                    8. Arsitektur Teknis &amp; Panduan Pengembangan Wiki
+                </h2>
+                <div class="p-4 sm:p-5 rounded-xl bg-wiki-sidebar dark:bg-slate-800/60 border border-gray-300 dark:border-slate-700 space-y-4 text-sm text-gray-800 dark:text-slate-200">
+                    <p>
+                        Bagian dokumentasi teknis ini merangkum bahasa pemrograman, arsitektur komponen, serta tahapan pengembangan yang digunakan untuk membangun ensiklopedia <strong>BDM Wiki Indonesia</strong> ini dan cara mengembangkannya ke skala produksi:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-3.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700">
+                            <h3 class="font-bold text-gray-900 dark:text-amber-400 mb-1.5">1. Stack Teknologi Inti</h3>
+                            <ul class="list-disc list-inside text-xs space-y-1 text-gray-700 dark:text-slate-300">
+                                <li><strong>HTML5 Semantik:</strong> Struktur artikel ensiklopedia, Infobox, dan aksesibilitas.</li>
+                                <li><strong>Tailwind CSS:</strong> Sistem desain responsif, <em>Dark/Light Mode</em>, dan badge Tier BDM.</li>
+                                <li><strong>JavaScript (ES6+):</strong> Mesin <em>Live Search</em>, filter multi-kriteria, dan penyimpanan <code>localStorage</code>.</li>
+                            </ul>
+                        </div>
+                        <div class="p-3.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700">
+                            <h3 class="font-bold text-gray-900 dark:text-amber-400 mb-1.5">2. Tahapan Pembuatan</h3>
+                            <ol class="list-decimal list-inside text-xs space-y-1 text-gray-700 dark:text-slate-300">
+                                <li>Perancangan skema data JSON untuk Wilayah, Item, Class, dan Boss.</li>
+                                <li>Implementasi tata letak tiga pilar Wikipedia (Sidebar, Artikel, Infobox).</li>
+                                <li>Pembuatan mesin indeks pencarian instan dan filter kelangkaan.</li>
+                                <li>Integrasi modal kontributor berbasis <code>localStorage</code>.</li>
+                            </ol>
+                        </div>
+                        <div class="p-3.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700">
+                            <h3 class="font-bold text-gray-900 dark:text-amber-400 mb-1.5">3. Pengembangan Lanjutan</h3>
+                            <ul class="list-disc list-inside text-xs space-y-1 text-gray-700 dark:text-slate-300">
+                                <li><strong>Backend API:</strong> Migrasi data JSON ke Node.js/Express atau Supabase/PostgreSQL.</li>
+                                <li><strong>Autentikasi &amp; Moderasi:</strong> Sistem login kontributor dan riwayat revisi artikel (<em>Wiki Diff</em>).</li>
+                                <li><strong>Kalkulator CP &amp; Build:</strong> Simulasi komposisi gear dan resonansi batu alkimia.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer Wikipedia -->
+            <footer class="mt-12 pt-6 border-t border-gray-300 dark:border-slate-800 text-xs text-gray-500 dark:text-slate-400 space-y-2">
+                <p>
+                    Halaman ini terakhir diperbarui secara dinamis oleh sistem <strong>BDM Wiki Indonesia</strong>. Seluruh nama karakter, wilayah, dan item adalah hak cipta milik <strong>Pearl Abyss Corp.</strong>
+                </p>
+                <div class="flex flex-wrap gap-4 text-wiki-link dark:text-sky-400">
+                    <a href="#top" class="hover:underline">Kembali ke Atas</a>
+                    <a href="#database-item" class="hover:underline">Database Equipment</a>
+                    <a href="#wilayah" class="hover:underline">Peta Dunia BDM</a>
+                    <a href="#update-patch" class="hover:underline">Catatan Patch Terbaru</a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL INTERAKTIF: TAMBAH / UPDATE KONTEN WIKI                         -->
+    <!-- ===================================================================== -->
+    <div id="wikiEditorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+        <div class="bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 z-10">
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-gray-900 dark:text-white">Editor Konten BDM Wiki</h3>
+                    <p class="text-xs text-gray-500 dark:text-slate-400">Tambahkan patch note, item baru, atau wilayah baru ke ensiklopedia.</p>
+                </div>
+                <button id="closeEditorModalBtn" type="button" class="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Tab Jenis Konten yang Ingin Ditambahkan -->
+            <div class="px-5 pt-3 border-b border-gray-200 dark:border-slate-800 flex gap-2">
+                <button type="button" data-editor-tab="update" class="editor-tab-btn active px-3 py-2 text-xs font-semibold border-b-2 border-wiki-link dark:border-amber-500 text-wiki-link dark:text-amber-400">
+                    Catatan Update
+                </button>
+                <button type="button" data-editor-tab="item" class="editor-tab-btn px-3 py-2 text-xs font-semibold border-b-2 border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200">
+                    Item / Gear Baru
+                </button>
+                <button type="button" data-editor-tab="region" class="editor-tab-btn px-3 py-2 text-xs font-semibold border-b-2 border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200">
+                    Wilayah Baru
+                </button>
+            </div>
+
+            <!-- Form 1: Tambah Catatan Update / Patch Note -->
+            <form id="formAddUpdate" class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Judul Pembaruan / Patch *</label>
+                    <input name="title" type="text" required placeholder="Contoh: Rilis Senjata Sovereign & Ekspansi Wilayah Baru" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wiki-link">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Tanggal Update *</label>
+                        <input name="date" type="date" required class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Kategori Update *</label>
+                        <select name="category" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                            <option value="Item Baru">Item Baru</option>
+                            <option value="Wilayah Baru">Wilayah Baru</option>
+                            <option value="Class Baru">Class Baru</option>
+                            <option value="Balance Patch">Balance Patch</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Ringkasan Perubahan *</label>
+                    <textarea name="summary" rows="3" required placeholder="Jelaskan detail item, penyesuaian skill class, atau fitur baru yang hadir..." class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-wiki-link"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" class="close-modal-trigger px-4 py-2 text-xs font-semibold rounded-lg border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold rounded-lg bg-wiki-link dark:bg-amber-600 text-white hover:opacity-90">Simpan Patch Note</button>
+                </div>
+            </form>
+
+            <!-- Form 2: Tambah Item / Equipment Baru -->
+            <form id="formAddItem" class="hidden p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Nama Item / Equipment *</label>
+                    <input name="name" type="text" required placeholder="Contoh: Sovereign Main Weapon" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Kategori *</label>
+                        <select name="category" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                            <option value="Senjata & Armor">Senjata &amp; Armor</option>
+                            <option value="Aksesoris & Relic">Aksesoris &amp; Relic</option>
+                            <option value="Item Penting & Material">Item Penting &amp; Material</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Tingkat Kelangkaan (Tier) *</label>
+                        <select name="tier" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                            <option value="Dawnveil">Dawnveil</option>
+                            <option value="Eternal">Eternal (Ungu Emas)</option>
+                            <option value="Chaos">Chaos (Biru Kehijauan)</option>
+                            <option value="Primal">Primal (Pink)</option>
+                            <option value="Abyssal">Abyssal (Merah)</option>
+                            <option value="Mystical">Mystical (Oranye)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Deskripsi Fungsi &amp; Efek *</label>
+                    <textarea name="description" rows="2" required placeholder="Jelaskan statistik CP, efek pasif, atau kegunaan material..." class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Cara Mendapatkan *</label>
+                    <input name="obtain" type="text" required placeholder="Contoh: Craft Menu menggunakan Dawnveil Crystal & Flame of Hongik" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" class="close-modal-trigger px-4 py-2 text-xs font-semibold rounded-lg border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold rounded-lg bg-wiki-link dark:bg-amber-600 text-white hover:opacity-90">Tambahkan ke Database</button>
+                </div>
+            </form>
+
+            <!-- Form 3: Tambah Wilayah Baru -->
+            <form id="formAddRegion" class="hidden p-5 space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Nama Wilayah *</label>
+                        <input name="name" type="text" required placeholder="Contoh: Ulukita" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Rentang Rekomendasi CP *</label>
+                        <input name="cpRange" type="text" required placeholder="Contoh: 85.000 – 98.000 CP" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Kota Utama *</label>
+                        <input name="cities" type="text" required placeholder="Contoh: Muzgar, Asparkan" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Monster / Boss Utama *</label>
+                        <input name="bosses" type="text" required placeholder="Contoh: Dark Seekers, Tungrad" class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1">Deskripsi Lore &amp; Karakteristik Wilayah *</label>
+                    <textarea name="description" rows="3" required placeholder="Jelaskan sejarah wilayah, kondisi geografis, dan drop eksklusif..." class="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" class="close-modal-trigger px-4 py-2 text-xs font-semibold rounded-lg border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold rounded-lg bg-wiki-link dark:bg-amber-600 text-white hover:opacity-90">Simpan Wilayah Baru</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL KONFIRMASI KUSTOM (PENGGANTI WINDOW.CONFIRM)                    -->
+    <!-- ===================================================================== -->
+    <div id="confirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+        <div class="bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-2xl shadow-xl w-full max-w-sm p-5 space-y-4">
+            <h3 class="font-serif font-bold text-base text-gray-900 dark:text-white">Reset Data Kontribusi Komunitas?</h3>
+            <p class="text-xs text-gray-600 dark:text-slate-400 leading-relaxed">
+                Tindakan ini akan menghapus seluruh item, wilayah, dan catatan update tambahan yang Anda simpan di penyimpanan lokal browser (<code>localStorage</code>) dan mengembalikan wiki ke data bawaan.
+            </p>
+            <div class="flex justify-end gap-2 pt-1">
+                <button id="cancelResetBtn" type="button" class="px-3.5 py-2 text-xs font-semibold rounded-lg border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800">
+                    Batal
+                </button>
+                <button id="confirmResetBtn" type="button" class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-red-600 hover:bg-red-500 text-white">
+                    Ya, Reset Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- CONTAINER NOTIFIKASI TOAST (PENGGANTI WINDOW.ALERT)                   -->
+    <!-- ===================================================================== -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ===================================================================== -->
+    <!-- SCRIPT LOGIKA ENSIKLOPEDIA BDM WIKI INDONESIA                         -->
+    <!-- ===================================================================== -->
+    <script>
+        (function () {
+            'use strict';
+
+            // =================================================================
+            // 1. DATABASE BAWAAN ENSIKLOPEDIA BLACK DESERT MOBILE
+            // =================================================================
+
+            const INITIAL_MECHANICS = [
+                {
+                    title: 'Sistem Pertarungan Action Combat',
+                    badge: 'Combat Core',
+                    description: 'Pertarungan non-target berkecepatan tinggi yang mengandalkan kombo skill berantai, pembatalan animasi, dan efek perlindungan seperti Super Armor, Forward Guard, serta Invincibility saat menghindar (Dodge). Mendukung fitur Auto-Combat dan Black Spirit Mode untuk grinding otomatis saat offline.'
+                },
+                {
+                    title: 'Black Spirit (Roh Hitam)',
+                    badge: 'Pendamping & CP',
+                    description: 'Entitas bayangan misterius yang selalu mendampingi petualang. Pemain dapat memberi makan (Dark Energy Absorption) peralatan tak terpakai kepada Black Spirit untuk meningkatkan levelnya, memberikan bonus stat permanen ke seluruh karakter dalam akun, serta membuka skill khusus Black Spirit Rage.'
+                },
+                {
+                    title: 'Manajemen Kamp (Camp Management)',
+                    badge: 'Simulasi & Ekonomi',
+                    description: 'Markas pribadi yang dapat dibangun dan ditingkatkan mulai dari Town Hall, Refinery (penghasil Black Stone otomatis), Armory, Trade Workshop, hingga Ranch. Pemain merekrut pekerja (Workers) untuk mengumpulkan sumber daya alam dan menjalankan misi Node Manager.'
+                },
+                {
+                    title: 'Family Combat Power (CP)',
+                    badge: 'Progresi Akun',
+                    description: 'Seluruh karakter alternatif (Alt) dalam satu server tergabung dalam satu Family. Sebagian besar CP berasal dari progresi akun bersama seperti Knowledge Boss & Monster, level Black Spirit, Koleksi, serta Emblem. Tim Family wajib digunakan pada konten Path of Glory dan Tower of Trials.'
+                },
+                {
+                    title: 'Sistem Enhancement & Awakening',
+                    badge: 'Upgrade Gear',
+                    description: 'Peningkatan level peralatan menggunakan Black Stone dan Pristine Black Crystal. Setelah mencapai batas tertentu, gear dapat menjalani Awakening untuk membuka potensi penuh dan meningkatkan tingkat Enhancement hingga +10 (OCT/ENE/DEC) menggunakan Restoration Scroll dan Valks\' Advice.'
+                },
+                {
+                    title: 'Hadum\'s Realm (Alam Hadum)',
+                    badge: 'Dimensi Gelap',
+                    description: 'Dimensi paralel yang diselimuti kegelapan Dewi Keputusasaan Hadum. Membutuhkan konsumsi Holy Vial of Light untuk memasuki Blessing of Light Tier 1–3 demi memperoleh EXP berlipat ganda, Knowledge monster Hadum, Chaos Core, dan Dark Coin.'
+                },
+                {
+                    title: 'Great Desert (Gurun Besar)',
+                    badge: 'Eksplorasi Terbuka',
+                    description: 'Hamparan padang pasir luas tanpa navigasi otomatis yang mengharuskan pemain mengendarai Unta, Gajah, atau Kuda Mistis Diné. Pemain menggali artefak kuno memakai Edana\'s Coin, menyelesaikan Hidden Temples tiap bulan, dan memburu bos gurun Laytenn.'
+                },
+                {
+                    title: 'Great Ocean (Samudra Luas)',
+                    badge: 'Navigasi Laut',
+                    description: 'Konten pelayaran bebas tempat pemain merakit dan meng-upgrade kapal perang dari Epheria Guard Boat hingga Epheria Caravel. Aktivitas meliputi perburuan monster laut, bajak laut Cox, memancing laut dalam, penukaran barang pulau, dan raid bos laut Khan.'
+                },
+                {
+                    title: 'Node War & Siege War',
+                    badge: 'PvP Skala Besar',
+                    description: 'Peperangan teritorial antar Guild yang digelar secara terjadwal. Anggota guild mengoperasikan meriam, Hwacha, Gajah Perang, dan Ogre untuk menghancurkan benteng lawan. Guild pemenang Node Tier tinggi berhak menantang takhta Kastil dalam Siege War mingguan.'
+                },
+                {
+                    title: 'Life Skills (Keterampilan Hidup)',
+                    badge: 'Non-Combat',
+                    description: 'Mencakup Gathering (Foraging, Logging, Mining), Fishing, Alchemy (meracik Alchemy Stone dan ramuan), serta Merchantry—mode perdagangan keliling antar kota menggunakan kereta kuda untuk memperoleh Silver, Black Pearl, dan material langka.'
+                }
+            ];
+
+            const INITIAL_REGIONS = [
+                {
+                    id: 'reg-balenos',
+                    name: 'Balenos',
+                    tierGroup: 'early',
+                    cpRange: '1.000 – 4.500 CP (Hadum: 12.000+)',
+                    cities: 'Velia, Western Guard Camp',
+                    bosses: 'Red Nose, Giath, Goblin Chief, Cron Castle Soldiers',
+                    description: 'Wilayah pesisir utara yang damai namun menyimpan reruntuhan kuno. Menjadi titik awal petualangan pemain baru setelah terbangun di Western Guard Camp dan tiba di pelabuhan Velia.'
+                },
+                {
+                    id: 'reg-serendia',
+                    name: 'Serendia',
+                    tierGroup: 'early',
+                    cpRange: '3.500 – 7.500 CP (Hadum: 15.000+)',
+                    cities: 'Heidel, Glish, Cron Castle',
+                    bosses: 'Dastard Bheg, Titium, Al Rhundi, Monastery Cultist',
+                    description: 'Kerajaan agraris subur di selatan Balenos yang dilanda ketegangan politik akibat kekalahan dari Calpheon serta munculnya sekte sesat Kzarka di Kuil Serendia dan rawa Glish.'
+                },
+                {
+                    id: 'reg-calpheon',
+                    name: 'Calpheon',
+                    tierGroup: 'early',
+                    cpRange: '6.500 – 14.000 CP (Hadum: 20.000+)',
+                    cities: 'Calpheon City, Keplan, Trent',
+                    bosses: 'Hexe Marie, Quint, Muraka, Cyclops, Treant',
+                    description: 'Republik dagang raksasa dan adidaya militer di bagian barat benua. Terkenal dengan ibu kota megah Calpheon City, tambang petrifikasi Keplan, serta hutan peri Hexe Sanctuary.'
+                },
+                {
+                    id: 'reg-mediah',
+                    name: 'Mediah',
+                    tierGroup: 'mid',
+                    cpRange: '12.000 – 22.000 CP (Hadum: 28.000+)',
+                    cities: 'Altinova, Tarif',
+                    bosses: 'Illezra\'s Servants, Elric Cultist, Sausan Garrison, Helm Tribe',
+                    description: 'Tanah tandus berbatu yang menjadi pusat perdagangan besi hitam dan alkimia sihir gelap di desa Tarif. Menjadi saksi peristiwa Tiga Hari Kegelapan yang dipicu penyihir Illezra.'
+                },
+                {
+                    id: 'reg-valencia',
+                    name: 'Valencia & Great Desert',
+                    tierGroup: 'mid',
+                    cpRange: '20.000 – 38.000 CP',
+                    cities: 'Valencia City, Shakatu, Kuil Gurun (Desert Temples)',
+                    bosses: 'Tukar Laytenn, Apocros, Crescent Guardian, Basilisk, Aakman',
+                    description: 'Kerajaan gurun emas di wilayah timur yang menyimpan sejarah peradaban kuno, pasir hisap Great Desert, kuil tersembunyi, serta konflik memperebutkan Black Stone.'
+                },
+                {
+                    id: 'reg-kamasylvia',
+                    name: 'Kamasylvia',
+                    tierGroup: 'mid',
+                    cpRange: '32.000 – 46.000 CP',
+                    cities: 'Grána, Old Wisdom Tree',
+                    bosses: 'Mirumok Destroyer Offin, Ronaros, Fadus, Gyfin Rhasia',
+                    description: 'Tanah suci para peri Ganelle dan Vedir di barat daya Calpheon yang dipenuhi hutan mistis bercahaya, roh alam, dan energi Pohon Suci Kamasylve.'
+                },
+                {
+                    id: 'reg-drieghan',
+                    name: 'Drieghan',
+                    tierGroup: 'endgame',
+                    cpRange: '42.000 – 54.000 CP',
+                    cities: 'Duvencrune',
+                    bosses: 'Garmoth (Naga Merah), Sherekhan Necropolis, Blood Wolf',
+                    description: 'Dataran tinggi pegunungan berbatu yang dikenal sebagai tanah para naga dan leluhur suku Sherekhan, dengan ibu kota Duvencrune yang dikelilingi pemandian air panas.'
+                },
+                {
+                    id: 'reg-odyllita',
+                    name: 'O\'dyllita',
+                    tierGroup: 'endgame',
+                    cpRange: '50.000 – 64.000 CP',
+                    cities: 'O\'draxxia',
+                    bosses: 'Tunkuta (Turo), Thornwood Forest, Crypt of Resting Thoughts',
+                    description: 'Wilayah gelap berduri di selatan Kamasylvia yang dikuasai oleh faksi peri Ahib. Menyimpan rahasia pohon terbakar Turasil dan sumber material Chaos tingkat tinggi.'
+                },
+                {
+                    id: 'reg-everfrost',
+                    name: 'Mountain of Eternal Winter / Everfrost',
+                    tierGroup: 'endgame',
+                    cpRange: '58.000 – 72.000 CP',
+                    cities: 'Eilton, Zvier Highland',
+                    bosses: 'Erebjork, Murrowak Labyrinth, Okjinsini',
+                    description: 'Pegunungan bersalju abadi di selatan Drieghan dengan mekanika badai salju yang membutuhkan Citron Tea agar karakter tidak terkena hipotermia, serta legenda Naga Emas Labreska.'
+                },
+                {
+                    id: 'reg-morninglight',
+                    name: 'Land of the Morning Light',
+                    tierGroup: 'endgame',
+                    cpRange: '65.000 – 85.000+ CP',
+                    cities: 'Nampo, Dalbeol, Byukgye',
+                    bosses: 'Sangoon, Bari, Golden Pig King, Duoksini, Imoogi (Black Shrine)',
+                    description: 'Benua timur jauh di seberang samudra yang terinspirasi oleh folklor dan arsitektur era Joseon Korea. Menghadirkan sistem pertarungan bos eksklusif Black Shrine dan material Dawnveil.'
+                }
+            ];
+
+            const INITIAL_ITEMS = [
+                // SENJATA & ARMOR
+                {
+                    id: 'item-dawnveil',
+                    name: 'Dawnveil Gear (Main, Sub, & Armor)',
+                    category: 'Senjata & Armor',
+                    tier: 'Dawnveil',
+                    description: 'Peralatan tingkat tertinggi saat ini yang melampaui batas Chaos dan Eternal, memberikan lonjakan CP masif serta efek pasif Fajar Timur.',
+                    obtain: 'Crafting di menu Craft menggunakan Chaos Gear +8 ke atas, Dawnveil Crystal, dan Flame of Hongik dari Land of the Morning Light.'
+                },
+                {
+                    id: 'item-blackstar',
+                    name: 'Blackstar Weapons (Senjata Blackstar)',
+                    category: 'Senjata & Armor',
+                    tier: 'Eternal',
+                    description: 'Senjata legendaris yang ditempa dari meteorit bintang hitam, memiliki efek aura kegelapan merah menyala dan tambahan kerusakan terhadap monster bos.',
+                    obtain: 'Menyelesaikan quest garis keturunan Blackstar serta mengumpulkan material Voidsent Eye dan Chaos Jewel.'
+                },
+                {
+                    id: 'item-chaos-gear',
+                    name: 'Chaos Gear (Dimensional Chaos)',
+                    category: 'Senjata & Armor',
+                    tier: 'Chaos',
+                    description: 'Peralatan inti mid-to-endgame yang menggabungkan kekuatan Elion dan Hadum, mendukung hingga 5 slot Crystal Dimensional dan resonansi CP tinggi.',
+                    obtain: 'Upgrade dari Primal Gear (Pink) menggunakan Chaos Jewel dan Dimensional Fragment.'
+                },
+                {
+                    id: 'item-primal-gear',
+                    name: 'Primal Elion / Hadum Gear',
+                    category: 'Senjata & Armor',
+                    tier: 'Primal',
+                    description: 'Set equipment berbingkai merah muda yang menjadi batu loncatan wajib sebelum berevolusi menjadi Chaos Gear.',
+                    obtain: 'Craft menggunakan Gear Abyssal (Merah) dan material Alyaelli Fragment dari World Boss.'
+                },
+                {
+                    id: 'item-kzarka',
+                    name: 'Kzarka Main Weapon',
+                    category: 'Senjata & Armor',
+                    tier: 'Abyssal',
+                    description: 'Senjata utama ikonik yang diresapi kekuatan Dewa Korupsi Kzarka, memberikan statistik serangan dasar dan kecepatan serangan tinggi.',
+                    obtain: 'Drop langsung dari World Boss Kzarka, Shakatu\'s Shop, atau Craft dengan Alyaelli Fragment.'
+                },
+                {
+                    id: 'item-dandelion',
+                    name: 'Dandelion Awakening Weapon',
+                    category: 'Senjata & Armor',
+                    tier: 'Abyssal',
+                    description: 'Senjata kedua/Awakening khusus yang dirancang oleh persaudaraan Dandelion untuk memaksimalkan potensi skill kelas.',
+                    obtain: 'Drop dari World Boss Karanda atau crafting menggunakan fragmen bos Karanda.'
+                },
+                {
+                    id: 'item-nouver',
+                    name: 'Nouver Sub-Weapon',
+                    category: 'Senjata & Armor',
+                    tier: 'Abyssal',
+                    description: 'Senjata sekunder berorientasi ofensif murni (Attack Power tinggi) yang sangat populer untuk skenario PvP dan burst damage.',
+                    obtain: 'Drop dari World Boss Nouver di Great Desert atau Craft menggunakan Nouver Fragment.'
+                },
+                {
+                    id: 'item-kutum',
+                    name: 'Kutum Sub-Weapon',
+                    category: 'Senjata & Armor',
+                    tier: 'Abyssal',
+                    description: 'Senjata sekunder seimbang yang memberikan kombinasi Attack, Defense, serta tambahan damage ke monster PvE.',
+                    obtain: 'Drop dari World Boss Kutum di Makam Kuno atau Craft menggunakan Kutum Fragment.'
+                },
+                {
+                    id: 'item-jin-liverto',
+                    name: 'JIN Liverto & Grunil Armor Set',
+                    category: 'Senjata & Armor',
+                    tier: 'Mystical',
+                    description: 'Peralatan Mystical (Oranye) terbaik bagi petualang awal sebelum beralih ke set Abyssal merah.',
+                    obtain: 'Shakatu\'s Gear Shop, hadiah misi utama Mediah, atau Market.'
+                },
+
+                // AKSESORIS & RELIC
+                {
+                    id: 'item-eternal-acc',
+                    name: 'Eternal Accessory Set',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Eternal',
+                    description: 'Aksesoris puncak (Cincin, Kalung, Anting, Sabuk, Gelang) dengan statistik CP sangat tinggi dan slot memori khusus.',
+                    obtain: 'Upgrade dari Chaos Accessory menggunakan Voidsent Eye dan material wilayah O\'dyllita / Everfrost.'
+                },
+                {
+                    id: 'item-chaos-acc',
+                    name: 'Chaos Accessory Set',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Chaos',
+                    description: 'Aksesoris berwarna biru kehijauan yang dapat di-enchant menggunakan Akhram Prophecy dan menyimpan Crystal dimensi.',
+                    obtain: 'Awakening dari Primal Accessory menggunakan Chaos Jewel dan Caphras Secret Book.'
+                },
+                {
+                    id: 'item-primal-acc',
+                    name: 'Primal Accessory Set',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Primal',
+                    description: 'Aksesoris merah muda yang membuka fitur Resonance bonus besar saat kelima bagian aksesoris dipakai bersamaan.',
+                    obtain: 'Craft dari Abyssal Caphras Accessory dan Lapis Lazuli.'
+                },
+                {
+                    id: 'item-caphras-acc',
+                    name: 'Abyssal Caphras Accessory',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Abyssal',
+                    description: 'Aksesoris merah yang diresapi energi alkemis abadi Caphras, memberikan peningkatan AP dan DP signifikan.',
+                    obtain: 'Hadum Boss Rush, Event musiman, atau Craft dengan Caphras Dust & Secret Book.'
+                },
+                {
+                    id: 'item-primal-relic',
+                    name: 'Primal Relic (Aal / Labreve / Serrett / Ahib)',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Primal',
+                    description: 'Relik suci yang memperkuat cabang skill (Branch Damage) karakter serta dapat ditanami Glyph kuno.',
+                    obtain: 'Upgrade dari Abyssal Relic menggunakan Relic Fragment dan Caphras Secret Book.'
+                },
+                {
+                    id: 'item-sushi-stone',
+                    name: 'Alchemy Stone: Critical / Sushi (Enhanced)',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Primal',
+                    description: 'Batu alkimia tempur utama (dikenal komunitas sebagai "Sushi") yang meningkatkan Critical Damage, seluruh level gear +1 hingga +3, dan CP besar.',
+                    obtain: 'Synthesize Alchemy Stone di Camp menggunakan Alchemy Stone Fragment dan Caphras Dust.'
+                },
+                {
+                    id: 'item-luck-stone',
+                    name: 'Alchemy Stone: Stone of Luck',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Primal',
+                    description: 'Batu alkimia khusus farming yang meningkatkan peluang drop item (Spoils Drop Rate) dan mengurangi waktu cooldown peti rampasan.',
+                    obtain: 'Alchemy Workshop di Camp atau hadiah peti eksplorasi Great Desert.'
+                },
+                {
+                    id: 'item-ogre-ring',
+                    name: 'Mystical Ogre Ring & Witch\'s Earring',
+                    category: 'Aksesoris & Relic',
+                    tier: 'Mystical',
+                    description: 'Aksesoris klasik berbingkai oranye yang menjadi standar bagi petualang tingkat awal hingga menengah.',
+                    obtain: 'Drop dari Ogre di Hutan Mansha, Hexe Sanctuary, atau Shakatu\'s Accessory Shop.'
+                },
+
+                // ITEM PENTING & MATERIAL
+                {
+                    id: 'item-voidsent-eye',
+                    name: 'Voidsent Eye',
+                    category: 'Item Penting & Material',
+                    tier: 'Eternal',
+                    description: 'Material langka berenergi kehampaan yang diperlukan untuk membuat peralatan tingkat Eternal dan senjata Blackstar.',
+                    obtain: 'Drop dari World Boss endgame, monster zona tinggi O\'dyllita/Everfrost, dan hadiah Black Shrine.'
+                },
+                {
+                    id: 'item-chaos-jewel',
+                    name: 'Chaos Jewel',
+                    category: 'Item Penting & Material',
+                    tier: 'Chaos',
+                    description: 'Permata inti penggabung dimensi Elion dan Hadum, digunakan sebagai bahan utama pembuatan Chaos Gear dan Chaos Accessory.',
+                    obtain: 'Digabungkan dari 100x Chaos Core yang didapat dari monster Hadum\'s Realm dan Chaos Rift.'
+                },
+                {
+                    id: 'item-ahkrad',
+                    name: 'Ah\'krad',
+                    category: 'Item Penting & Material',
+                    tier: 'Primal',
+                    description: 'Kristal energi purba yang sangat berharga untuk menempa Akhrad Crystal (Crystal CP tertinggi untuk Chaos Gear) dan upgrade aksesoris.',
+                    obtain: 'Drop langka dari Chaos Rift, monster wilayah Kamasylvia/Drieghan, serta Guild Raid.'
+                },
+                {
+                    id: 'item-dimensional-frag',
+                    name: 'Dimensional Fragment',
+                    category: 'Item Penting & Material',
+                    tier: 'Abyssal',
+                    description: 'Pecahan energi lintas dimensi yang digunakan dalam jumlah besar untuk membuat Dimensional Crystal dan meningkatkan Chaos Gear.',
+                    obtain: 'Menyerap (Feed) perlengkapan Mystical (Oranye) dan Abyssal (Merah) ke Black Spirit.'
+                },
+                {
+                    id: 'item-caphras-book',
+                    name: 'Caphras Secret Book',
+                    category: 'Item Penting & Material',
+                    tier: 'Primal',
+                    description: 'Buku catatan rahasia alkemis Caphras yang wajib digunakan untuk merakit Primal/Chaos Accessory serta Relik tingkat lanjut.',
+                    obtain: 'Drop dari monster Hadum\'s Realm, Kuil Gurun, dan misi mingguan.'
+                },
+                {
+                    id: 'item-restoration-scroll',
+                    name: 'Restoration Scroll',
+                    category: 'Item Penting & Material',
+                    tier: 'Mystical',
+                    description: 'Gulungan pemulihan krusial yang menyelamatkan level Enhancement gear atau aksesoris agar tidak turun saat proses tempa gagal.',
+                    obtain: 'Hadiah login harian, Merchantry, misi Black Spirit, dan penukaran Silver di toko event.'
+                },
+                {
+                    id: 'item-black-pearl',
+                    name: 'Black Pearl',
+                    category: 'Item Penting & Material',
+                    tier: 'Eternal',
+                    description: 'Mata uang premium utama dalam BDM yang dapat diperoleh pemain Free-to-Play melalui aktivitas dalam game untuk membeli bundel, kostum, dan material.',
+                    obtain: 'Arena PvP (Ramoness/Ranked), Merchantry, hadiah Knowledge, dan penjualan item tertentu di Market.'
+                },
+                {
+                    id: 'item-holy-vial',
+                    name: 'Holy Vial of Light',
+                    category: 'Item Penting & Material',
+                    tier: 'Mystical',
+                    description: 'Ramuan cahaya suci yang menjadi bahan bakar utama untuk bertahan hidup dan memperoleh drop di alam kegelapan Hadum\'s Realm.',
+                    obtain: 'Craft di Alchemy Lab menggunakan Lightstone tak terpakai atau dibeli dari Toko.'
+                },
+                {
+                    id: 'item-edana-coin',
+                    name: 'Edana\'s Coin',
+                    category: 'Item Penting & Material',
+                    tier: 'Abyssal',
+                    description: 'Koin kuno peradaban Valencia yang digunakan untuk mempersembahkan doa di Black Rock Shrine (Kuil Batu Hitam) di Great Desert.',
+                    obtain: 'Penggalian artefak (Excavation) dan mengalahkan monster di wilayah Great Desert.'
+                },
+                {
+                    id: 'item-flame-hongik',
+                    name: 'Flame of Hongik & Dawnveil Crystal',
+                    category: 'Item Penting & Material',
+                    tier: 'Dawnveil',
+                    description: 'Material mistis dari benua timur yang dibutuhkan untuk menyempurnakan peralatan menjadi tingkat Dawnveil.',
+                    obtain: 'Menaklukkan bos Black Shrine di Land of the Morning Light dan menggabungkan percikan api Hongik.'
+                }
+            ];
+
+            const INITIAL_CLASSES = [
+                {
+                    name: 'Warrior',
+                    evolution: 'Berserker (Awakening) / Gladiator (Ascension)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Greatsword (Berserker) | Longsword & Shield (Gladiator)',
+                    style: 'Petarung jarak dekat serba bisa. Gladiator unggul dalam pertahanan perisai dan duel 1v1, sementara Berserker mengandalkan tebasan pedang raksasa berdaya hancur luas.'
+                },
+                {
+                    name: 'Ranger',
+                    evolution: 'Windwalker (Awakening) / Huntress (Ascension)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Kamasilven Sword & Dagger (Windwalker) | Longbow (Huntress)',
+                    style: 'Huntress mendominasi pertempuran jarak jauh dengan hujan panah cepat, sedangkan Windwalker bertransformasi menjadi petarung melee-akrobatik berelemen angin.'
+                },
+                {
+                    name: 'Witch',
+                    evolution: 'Archmage (Ascension) / Invoker (Awakening)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Staff & Dagger (Archmage) | Aad Sphera (Invoker)',
+                    style: 'Penyihir pengendali elemen api, es, petir, dan tanah dengan jangkauan Area of Effect (AoE) raksasa yang sangat vital dalam Node War dan farming massa.'
+                },
+                {
+                    name: 'Giant',
+                    evolution: 'Titan (Ascension) / Destroyer (Awakening)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Dual Axes (Titan) | Iron Buster Hand Cannon (Destroyer)',
+                    style: 'Raksasa bertubuh kekar dengan ketahanan tinggi dan teknik bantingan (Grapple). Destroyer memakai meriam lengan berdaya ledak tinggi untuk mobilitas dan jarak menengah.'
+                },
+                {
+                    name: 'Valkyrie',
+                    evolution: 'Lancer (Awakening) / Paladin (Ascension)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Lancia & Shield (Lancer) | Longsword & Shield (Paladin)',
+                    style: 'Ksatria suci Elion yang memadukan serangan cahaya, penyembuhan rekan tim, serta tusukan tombak Lancia berkecepatan tinggi.'
+                },
+                {
+                    name: 'Sorceress',
+                    evolution: 'Reaper (Awakening) / Raven (Ascension)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Death Scythe (Reaper) | Amulet & Talisman (Raven)',
+                    style: 'Pengguna sihir gelap yang lincah dengan mekanika iframe teleportasi bayangan dan tebasan sabit maut untuk menghabisi lawan dalam sekejap.'
+                },
+                {
+                    name: 'Musa',
+                    evolution: 'Blade Master (Ascension) / Warlord (Awakening)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Katana & Horn Bow (Blade Master) | Crescent Blade (Warlord)',
+                    style: 'Pendekar timur yang mengandalkan teknik dash berkecepatan kilat, tebasan angin presisi, dan sapuan tombak sabit api.'
+                },
+                {
+                    name: 'Dark Knight',
+                    evolution: 'Phantasma (Awakening) / Darkness (Ascension)',
+                    type: 'Ascension / Awakening',
+                    weapons: 'Vediant Dual Phantom Blades (Phantasma) | Kriegsmesser (Darkness)',
+                    style: 'Ksatria peri Vedir yang memadukan pedang besar dengan sihir kegelapan jarak menengah dan hujan pedang ilusi.'
+                },
+                {
+                    name: 'Hashashin',
+                    evolution: 'Direct Ascension (Pengendali Badai Pasir)',
+                    type: 'Direct Ascension',
+                    weapons: 'Shamshir & Haladie',
+                    style: 'Pembunuh gurun asal Valencia yang mampu memanggil tornado pasir, berpindah posisi lewat fatamorgana, dan melancarkan serangan kejutan mematikan.'
+                },
+                {
+                    name: 'Corsair',
+                    evolution: 'Direct Ascension (Kapten Bajak Laut)',
+                    type: 'Direct Ascension',
+                    weapons: 'Serenaca (Pedang Air) & Mareca',
+                    style: 'Kapten bajak laut ceria yang bertarung menggunakan cambuk pedang air dan dapat berubah wujud menjadi putri duyung untuk memanggil gelombang pasang.'
+                },
+                {
+                    name: 'Drakania',
+                    evolution: 'Direct Ascension (Pewaris Naga Petir)',
+                    type: 'Direct Ascension',
+                    weapons: 'Slayer Greatsword & Shard',
+                    style: 'Ksatria berdarah naga yang menyerap ion listrik ke pedang raksasanya sebelum melepaskan ledakan petir berskala besar.'
+                },
+                {
+                    name: 'Scholar',
+                    evolution: 'Direct Ascension (Alkemis Gravitasi)',
+                    type: 'Direct Ascension',
+                    weapons: 'Dual Alchemy Hammers & Gravity Core',
+                    style: 'Ilmuwan belia yang memanipulasi hukum gravitasi dan logam mulia menggunakan dua palu tempur untuk melompat tinggi dan menghantam medan perang.'
+                },
+                {
+                    name: 'Choryeong',
+                    evolution: 'Direct Ascension (Pemanggil Roh Bunga)',
+                    type: 'Direct Ascension',
+                    weapons: 'Soul-Calling Fan & Seocheon Talismans',
+                    style: 'Saudari kembar Woosa dari Land of the Morning Light yang memanggil bunga dunia bawah dan roh pelindung untuk mengunci pergerakan musuh.'
+                },
+                {
+                    name: 'Woosa',
+                    evolution: 'Direct Ascension (Pengendali Awan & Badai)',
+                    type: 'Direct Ascension',
+                    weapons: 'Swallowtail Fan & Do Staff',
+                    style: 'Praktisi aliran Do dari timur yang menciptakan awan hujan, petir, serta kupu-kupu energi dengan jangkauan kontrol area luas.'
+                }
+            ];
+
+            const INITIAL_BOSSES = [
+                {
+                    name: 'Kzarka, Lord of Corruption',
+                    category: 'World Boss Harian',
+                    location: 'Kuil Serendia',
+                    drops: 'Kzarka Weapon, Alyaelli Fragment, Voidsent Eye (Chance)',
+                    description: 'Dewa kegelapan kuno yang disegel di bawah biara Serendia. Serangannya mencakup semburan napas api kegelapan dan meteor.'
+                },
+                {
+                    name: 'Karanda, Queen of Harpies',
+                    category: 'World Boss Harian',
+                    location: 'Karanda Ridge (Balenos)',
+                    drops: 'Dandelion Weapon, Alyaelli Fragment, Chaos Core',
+                    description: 'Ratu para Harpy yang menyerang dari udara dengan badai bulu tajam. Pemain wajib berlindung di dalam atau luar lingkaran angin saat fase ultimatenya.'
+                },
+                {
+                    name: 'Nouver, Tyrant of the Desert',
+                    category: 'World Boss Harian',
+                    location: 'Gurun Pasir Valencia',
+                    drops: 'Nouver Sub-Weapon, Alyaelli Fragment, Edana\'s Coin',
+                    description: 'Naga pasir raksasa yang menguasai badai gurun dengan semburan api panas dan tornado pasir.'
+                },
+                {
+                    name: 'Kutum, Ancient Weapon',
+                    category: 'World Boss Mingguan',
+                    location: 'Scarlet Sand Chamber',
+                    drops: 'Kutum Sub-Weapon, Alyaelli Fragment, Material Relic',
+                    description: 'Senjata mekanis raksasa berbentuk cacing purba yang menyedot energi dan menembakkan laser petir di dalam ruang bawah tanah.'
+                },
+                {
+                    name: 'Khan, Eye of the Great Ocean',
+                    category: 'Guild Raid Lautan',
+                    location: 'Oquilla\'s Eye (Great Ocean)',
+                    drops: 'Khan\'s Heart, Tear of the Goddess, Material Kapal',
+                    description: 'Monster laut kolosal yang harus dihadapi secara kolektif oleh anggota Guild menggunakan meriam pulau dan kapal perang.'
+                },
+                {
+                    name: 'Tukar Laytenn',
+                    category: 'World Boss Great Desert',
+                    location: 'Pasir Hitam Great Desert',
+                    drops: 'Tukar Laytenn Power Stone, Edana\'s Coin, Chaos Core',
+                    description: 'Senjata kuno raksasa berinti energi yang berkeliaran di Great Desert dan membutuhkan kerja sama puluhan petualang untuk meruntuhkannya.'
+                },
+                {
+                    name: 'Apocros',
+                    category: 'World Boss Great Desert',
+                    location: 'Reruntuhan Kuno Gurun',
+                    drops: 'Primal/Chaos Material, Edana\'s Coin, Rune of Darkness',
+                    description: 'Konstruksi mekanis purba dengan serangan gelombang kejut melingkar yang menguji ketangkasan menghindar pemain.'
+                },
+                {
+                    name: 'Path of Glory (Jalur Kejayaan)',
+                    category: 'Konten Endgame Family',
+                    location: 'Menu Family Content',
+                    drops: 'Emblem & Tus\' Nest Pass, Badge of Glory',
+                    description: 'Mode pertahanan menara (Tower Defense) taktis tempat pemain mengerahkan 6 karakter dalam satu Family secara bersamaan untuk melindungi gerbang kastil dari gelombang bos.'
+                },
+                {
+                    name: 'Constellation (Rasi Bintang)',
+                    category: 'Konten Endgame Family',
+                    location: 'Menu Constellation',
+                    drops: 'Constellation Knowledge (CP Permanen), Starlight Fragment',
+                    description: 'Ekspedisi lintas bintang menggunakan tim karakter Family untuk menaklukkan penjaga rasi bintang demi meningkatkan level Knowledge dan CP akun secara permanen.'
+                }
+            ];
+
+            const INITIAL_UPDATES = [
+                {
+                    id: 'upd-1',
+                    title: 'Ekspansi Dawnveil Gear & Bos Baru Black Shrine',
+                    date: '2026-10-15',
+                    category: 'Item Baru',
+                    summary: 'Penambahan tingkat peralatan baru Dawnveil untuk Main Weapon, Sub-Weapon, dan Armor yang dapat ditempa menggunakan Dawnveil Crystal serta Flame of Hongik dari Land of the Morning Light.'
+                },
+                {
+                    id: 'upd-2',
+                    title: 'Pembukaan Wilayah Puncak Everfrost & Labirin Murrowak',
+                    date: '2026-08-22',
+                    category: 'Wilayah Baru',
+                    summary: 'Wilayah bersalju abadi kini dapat dijelajahi lebih dalam dengan penambahan zona perburuan 70.000+ CP dan mekanika konsumsi Citron Tea untuk melawan hawa dingin.'
+                },
+                {
+                    id: 'upd-3',
+                    title: 'Rilis Kelas Baru: Scholar — Ilmuwan Pengendali Gravitasi',
+                    date: '2026-06-10',
+                    category: 'Class Baru',
+                    summary: 'Hadirnya kelas Direct Ascension baru, Scholar, yang menggunakan dua palu alkimia dan inti gravitasi untuk melancarkan kombo udara berdaya hancur tinggi.'
+                },
+                {
+                    id: 'upd-4',
+                    title: 'Penyesuaian Keseimbangan Node War, Siege War & Arena PvP',
+                    date: '2026-04-18',
+                    category: 'Balance Patch',
+                    summary: 'Peningkatan ketahanan Hwacha dan Ogre pada Node War Tier 3, serta penyesuaian kerusakan skill Super Armor untuk kelas Archmage, Berserker, dan Woosa.'
+                }
+            ];
+
+            // =================================================================
+            // 2. MANAJEMEN STATE & PENYIMPANAN LOKAL (LOCALSTORAGE)
+            // =================================================================
+
+            const STORAGE_KEYS = {
+                THEME: 'bdm_wiki_theme',
+                CUSTOM_REGIONS: 'bdm_wiki_custom_regions',
+                CUSTOM_ITEMS: 'bdm_wiki_custom_items',
+                CUSTOM_UPDATES: 'bdm_wiki_custom_updates'
+            };
+
+            function loadFromStorage(key, fallback = []) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : fallback;
+                } catch (err) {
+                    console.error('Gagal membaca localStorage:', err);
+                    return fallback;
+                }
+            }
+
+            function saveToStorage(key, data) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                } catch (err) {
+                    console.error('Gagal menyimpan ke localStorage:', err);
+                }
+            }
+
+            let customRegions = loadFromStorage(STORAGE_KEYS.CUSTOM_REGIONS, []);
+            let customItems = loadFromStorage(STORAGE_KEYS.CUSTOM_ITEMS, []);
+            let customUpdates = loadFromStorage(STORAGE_KEYS.CUSTOM_UPDATES, []);
+
+            // Filter state aktif
+            let activeItemTier = 'all';
+            let activePatchCategory = 'all';
+
+            // =================================================================
+            // 3. SISTEM TEMA TERANG (WIKIPEDIA) & GELAP (GAMER)
+            // =================================================================
+
+            const htmlEl = document.documentElement;
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    htmlEl.classList.add('dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                } else {
+                    htmlEl.classList.remove('dark');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
+                localStorage.setItem(STORAGE_KEYS.THEME, theme);
+            }
+
+            // Inisialisasi tema dari localStorage (default: Light Mode khas Wikipedia)
+            const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
+            applyTheme(savedTheme);
+
+            themeToggleBtn.addEventListener('click', () => {
+                const isDark = htmlEl.classList.contains('dark');
+                applyTheme(isDark ? 'light' : 'dark');
+                showToast(isDark ? 'Beralih ke Mode Terang (Wikipedia Classic)' : 'Beralih ke Mode Gelap (Gamer Night)');
+            });
+
+            // =================================================================
+            // 4. HELPER TAMPILAN BADGE TIER BDM & TOAST NOTIFIKASI
+            // =================================================================
+
+            function getTierBadgeClasses(tier) {
+                switch (tier) {
+                    case 'Mystical':
+                        return 'bg-orange-500/15 text-orange-700 dark:text-orange-300 border-orange-400/60';
+                    case 'Abyssal':
+                        return 'bg-red-500/15 text-red-700 dark:text-red-300 border-red-400/60';
+                    case 'Primal':
+                        return 'bg-pink-500/15 text-pink-700 dark:text-pink-300 border-pink-400/60';
+                    case 'Chaos':
+                        return 'bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border-cyan-400/60';
+                    case 'Eternal':
+                        return 'bg-gradient-to-r from-purple-500/20 to-amber-500/20 text-purple-800 dark:text-amber-300 border-amber-400';
+                    case 'Dawnveil':
+                        return 'bg-gradient-to-r from-amber-500/25 via-yellow-500/20 to-rose-500/20 text-amber-900 dark:text-amber-200 border-amber-500';
+                    default:
+                        return 'bg-gray-100 text-gray-800 border-gray-300';
+                }
+            }
+
+            function showToast(message) {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = 'pointer-events-auto px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-amber-500 text-white dark:text-slate-950 text-xs font-semibold shadow-lg border border-slate-700 dark:border-amber-400 transition-all duration-300 transform translate-y-2 opacity-0';
+                toast.textContent = message;
+                container.appendChild(toast);
+
+                requestAnimationFrame(() => {
+                    toast.classList.remove('translate-y-2', 'opacity-0');
+                });
+
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3200);
+            }
+
+            // =================================================================
+            // 5. FUNGSI RENDER KONTEN ENSIKLOPEDIA
+            // =================================================================
+
+            function renderMechanics() {
+                const grid = document.getElementById('mechanicsGrid');
+                grid.innerHTML = INITIAL_MECHANICS.map((m, idx) => `
+                    <article class="p-4 rounded-xl bg-wiki-sidebar/70 dark:bg-slate-800/60 border border-gray-300 dark:border-slate-700 hover:border-wiki-link dark:hover:border-amber-500/60 transition-colors">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <h3 class="font-bold text-sm sm:text-base text-gray-900 dark:text-white">
+                                <span class="text-wiki-link dark:text-amber-400 mr-1">2.${idx + 1}</span> ${m.title}
+                            </h3>
+                            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-white dark:bg-slate-900 text-gray-600 dark:text-slate-300 border border-gray-300 dark:border-slate-700 shrink-0">
+                                ${m.badge}
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-700 dark:text-slate-300 leading-relaxed">
+                            ${m.description}
+                        </p>
+                    </article>
+                `).join('');
+            }
+
+            function renderRegions() {
+                const grid = document.getElementById('regionsGrid');
+                const tierFilter = document.getElementById('regionTierFilter').value;
+                const allRegions = [...INITIAL_REGIONS, ...customRegions];
+
+                const filtered = allRegions.filter(reg => {
+                    if (tierFilter === 'all') return true;
+                    return reg.tierGroup === tierFilter;
+                });
+
+                document.getElementById('statRegionCount').textContent = allRegions.length;
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `<div class="col-span-full p-6 text-center text-sm text-gray-500 dark:text-slate-400 rounded-xl border border-dashed border-gray-300 dark:border-slate-700">Tidak ada wilayah yang cocok dengan filter rentang CP ini.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map((reg) => `
+                    <article id="${reg.id}" class="p-4 rounded-xl bg-white dark:bg-slate-800/70 border border-gray-300 dark:border-slate-700 shadow-2xs flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 mb-2.5 border-b border-gray-200 dark:border-slate-700">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-serif font-bold text-base text-gray-900 dark:text-white">${reg.name}</h3>
+                                    ${reg.isCustom ? '<span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Kontribusi Wiki</span>' : ''}
+                                </div>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-400/50">
+                                    ${reg.cpRange}
+                                </span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-gray-700 dark:text-slate-300 leading-relaxed mb-3">
+                                ${reg.description}
+                            </p>
+                        </div>
+                        <div class="pt-2.5 border-t border-gray-100 dark:border-slate-700/80 text-xs space-y-1">
+                            <div><span class="font-semibold text-gray-700 dark:text-slate-300">Kota Utama:</span> <span class="text-wiki-link dark:text-sky-400">${reg.cities}</span></div>
+                            <div><span class="font-semibold text-gray-700 dark:text-slate-300">Monster &amp; Boss:</span> <span class="text-gray-600 dark:text-slate-400">${reg.bosses}</span></div>
+                        </div>
+                    </article>
+                `).join('');
+            }
+
+            function renderItems() {
+                const grid = document.getElementById('itemsGrid');
+                const query = document.getElementById('itemSearchInput').value.trim().toLowerCase();
+                const categoryFilter = document.getElementById('itemCategoryFilter').value;
+
+                const allItems = [...customItems, ...INITIAL_ITEMS];
+                document.getElementById('statItemCount').textContent = allItems.length;
+
+                const filtered = allItems.filter(item => {
+                    const matchCategory = categoryFilter === 'all' || item.category === categoryFilter;
+                    const matchTier = activeItemTier === 'all' || item.tier === activeItemTier;
+                    const matchQuery = !query ||
+                        item.name.toLowerCase().includes(query) ||
+                        item.description.toLowerCase().includes(query) ||
+                        item.obtain.toLowerCase().includes(query) ||
+                        item.tier.toLowerCase().includes(query);
+                    return matchCategory && matchTier && matchQuery;
+                });
+
+                document.getElementById('itemFilterCounter').textContent = `Menampilkan ${filtered.length} dari ${allItems.length} item`;
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `<div class="col-span-full p-8 text-center text-sm text-gray-500 dark:text-slate-400 rounded-xl border border-dashed border-gray-300 dark:border-slate-700">Tidak ditemukan item atau equipment dengan kombinasi filter tersebut.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(item => `
+                    <article id="${item.id}" class="p-4 rounded-xl bg-white dark:bg-slate-800/75 border border-gray-300 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-white leading-snug">
+                                    ${item.name}
+                                </h3>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md border shrink-0 ${getTierBadgeClasses(item.tier)}">
+                                    ${item.tier}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-1.5 mb-2.5">
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-gray-100 dark:bg-slate-900 text-gray-600 dark:text-slate-400 border border-gray-200 dark:border-slate-700">
+                                    ${item.category}
+                                </span>
+                                ${item.isCustom ? '<span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Baru</span>' : ''}
+                            </div>
+                            <p class="text-xs text-gray-700 dark:text-slate-300 leading-relaxed mb-3">
+                                ${item.description}
+                            </p>
+                        </div>
+                        <div class="pt-2.5 border-t border-gray-100 dark:border-slate-700/80 text-[11px] text-gray-600 dark:text-slate-400">
+                            <span class="font-semibold text-gray-800 dark:text-slate-200">Cara Mendapatkan:</span> ${item.obtain}
+                        </div>
+                    </article>
+                `).join('');
+            }
+
+            function renderClasses() {
+                const grid = document.getElementById('classesGrid');
+                const typeFilter = document.getElementById('classTypeFilter').value;
+
+                document.getElementById('statClassCount').textContent = INITIAL_CLASSES.length;
+
+                const filtered = INITIAL_CLASSES.filter(c => typeFilter === 'all' || c.type === typeFilter);
+
+                grid.innerHTML = filtered.map(cls => `
+                    <article class="p-4 rounded-xl bg-wiki-sidebar/60 dark:bg-slate-800/60 border border-gray-300 dark:border-slate-700">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                            <h3 class="font-serif font-bold text-base text-gray-900 dark:text-white">${cls.name}</h3>
+                            <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-500/15 text-blue-800 dark:text-sky-300 border border-blue-400/40">
+                                ${cls.type}
+                            </span>
+                        </div>
+                        <p class="text-xs font-semibold text-wiki-link dark:text-amber-400 mb-1">
+                            Evolusi: ${cls.evolution}
+                        </p>
+                        <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-2">
+                            <strong>Senjata:</strong> ${cls.weapons}
+                        </p>
+                        <p class="text-xs sm:text-sm text-gray-700 dark:text-slate-300 leading-relaxed">
+                            ${cls.style}
+                        </p>
+                    </article>
+                `).join('');
+            }
+
+            function renderBosses() {
+                const grid = document.getElementById('bossesGrid');
+                grid.innerHTML = INITIAL_BOSSES.map(boss => `
+                    <article class="p-4 rounded-xl bg-white dark:bg-slate-800/70 border border-gray-300 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-2 mb-1.5">
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-white">${boss.name}</h3>
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-red-500/15 text-red-700 dark:text-red-300 border border-red-400/40 shrink-0">
+                                    ${boss.category}
+                                </span>
+                            </div>
+                            <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-2">
+                                <strong>Lokasi:</strong> ${boss.location}
+                            </p>
+                            <p class="text-xs text-gray-700 dark:text-slate-300 leading-relaxed mb-3">
+                                ${boss.description}
+                            </p>
+                        </div>
+                        <div class="pt-2 border-t border-gray-100 dark:border-slate-700 text-[11px] text-gray-600 dark:text-slate-400">
+                            <span class="font-semibold text-amber-700 dark:text-amber-400">Drop Utama:</span> ${boss.drops}
+                        </div>
+                    </article>
+                `).join('');
+            }
+
+            function renderUpdates() {
+                const list = document.getElementById('updatesList');
+                const allUpdates = [...customUpdates, ...INITIAL_UPDATES];
+                document.getElementById('statUpdateCount').textContent = allUpdates.length;
+
+                const filtered = allUpdates.filter(upd => activePatchCategory === 'all' || upd.category === activePatchCategory);
+
+                if (filtered.length === 0) {
+                    list.innerHTML = `<div class="p-6 text-center text-sm text-gray-500 dark:text-slate-400 rounded-xl border border-dashed border-gray-300 dark:border-slate-700">Belum ada catatan update pada kategori ini.</div>`;
+                    return;
+                }
+
+                list.innerHTML = filtered.map(upd => `
+                    <article class="p-4 rounded-xl bg-wiki-sidebar/80 dark:bg-slate-800/70 border border-gray-300 dark:border-slate-700">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="text-xs font-mono px-2 py-0.5 rounded bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700">
+                                    ${upd.date}
+                                </span>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-800 dark:text-amber-300 border border-blue-400/40 dark:border-amber-500/40">
+                                    ${upd.category}
+                                </span>
+                                ${upd.isCustom ? '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Kontribusi Anda</span>' : ''}
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-sm sm:text-base text-gray-900 dark:text-white mb-1">
+                            ${upd.title}
+                        </h3>
+                        <p class="text-xs sm:text-sm text-gray-700 dark:text-slate-300 leading-relaxed">
+                            ${upd.summary}
+                        </p>
+                    </article>
+                `).join('');
+            }
+
+            // =================================================================
+            // 6. PENCARIAN REAL-TIME GLOBAL (LIVE SEARCH ENGINE)
+            // =================================================================
+
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            const liveSearchResults = document.getElementById('liveSearchResults');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+            function buildSearchIndex() {
+                const index = [];
+                [...customItems, ...INITIAL_ITEMS].forEach(item => {
+                    index.push({
+                        type: `Item • ${item.tier}`,
+                        title: item.name,
+                        snippet: item.description,
+                        target: '#database-item',
+                        onSelect: () => {
+                            document.getElementById('itemSearchInput').value = item.name;
+                            activeItemTier = 'all';
+                            updateTierButtonsUI();
+                            renderItems();
+                        }
+                    });
+                });
+                [...INITIAL_REGIONS, ...customRegions].forEach(reg => {
+                    index.push({
+                        type: 'Wilayah',
+                        title: reg.name,
+                        snippet: `${reg.cities} (${reg.cpRange})`,
+                        target: `#${reg.id}`,
+                        onSelect: () => {
+                            document.getElementById('regionTierFilter').value = 'all';
+                            renderRegions();
+                        }
+                    });
+                });
+                INITIAL_CLASSES.forEach(cls => {
+                    index.push({
+                        type: 'Kelas Karakter',
+                        title: `${cls.name} (${cls.evolution})`,
+                        snippet: cls.style,
+                        target: '#kelas-karakter',
+                        onSelect: () => {
+                            document.getElementById('classTypeFilter').value = 'all';
+                            renderClasses();
+                        }
+                    });
+                });
+                INITIAL_BOSSES.forEach(boss => {
+                    index.push({
+                        type: boss.category,
+                        title: boss.name,
+                        snippet: `Lokasi: ${boss.location} — Drop: ${boss.drops}`,
+                        target: '#world-boss',
+                        onSelect: null
+                    });
+                });
+                INITIAL_MECHANICS.forEach(m => {
+                    index.push({
+                        type: 'Mekanika Game',
+                        title: m.title,
+                        snippet: m.description,
+                        target: '#mekanika',
+                        onSelect: null
+                    });
+                });
+                return index;
+            }
+
+            globalSearchInput.addEventListener('input', () => {
+                const q = globalSearchInput.value.trim().toLowerCase();
+                if (!q) {
+                    liveSearchResults.classList.add('hidden');
+                    clearSearchBtn.classList.add('hidden');
+                    return;
+                }
+
+                clearSearchBtn.classList.remove('hidden');
+                const matches = buildSearchIndex().filter(entry =>
+                    entry.title.toLowerCase().includes(q) ||
+                    entry.snippet.toLowerCase().includes(q) ||
+                    entry.type.toLowerCase().includes(q)
+                ).slice(0, 10);
+
+                if (matches.length === 0) {
+                    liveSearchResults.innerHTML = `<div class="p-4 text-xs text-gray-500 dark:text-slate-400 text-center">Tidak ada hasil untuk "<strong>${globalSearchInput.value}</strong>".</div>`;
+                } else {
+                    liveSearchResults.innerHTML = matches.map((m, idx) => `
+                        <button type="button" data-match-idx="${idx}" class="search-result-item w-full text-left px-4 py-2.5 hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors block">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="font-semibold text-xs sm:text-sm text-wiki-link dark:text-amber-400">${m.title}</span>
+                                <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700 shrink-0">${m.type}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-slate-400 truncate mt-0.5">${m.snippet}</p>
+                        </button>
+                    `).join('');
+
+                    liveSearchResults.querySelectorAll('.search-result-item').forEach((btn, idx) => {
+                        btn.addEventListener('click', () => {
+                            const selected = matches[idx];
+                            if (selected.onSelect) selected.onSelect();
+                            liveSearchResults.classList.add('hidden');
+                            const el = document.querySelector(selected.target);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        });
+                    });
+                }
+                liveSearchResults.classList.remove('hidden');
+            });
+
+            clearSearchBtn.addEventListener('click', () => {
+                globalSearchInput.value = '';
+                liveSearchResults.classList.add('hidden');
+                clearSearchBtn.classList.add('hidden');
+                globalSearchInput.focus();
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!globalSearchInput.contains(e.target) && !liveSearchResults.contains(e.target)) {
+                    liveSearchResults.classList.add('hidden');
+                }
+            });
+
+            // =================================================================
+            // 7. EVENT LISTENERS FILTER & NAVIGASI
+            // =================================================================
+
+            document.getElementById('regionTierFilter').addEventListener('change', renderRegions);
+            document.getElementById('itemSearchInput').addEventListener('input', renderItems);
+            document.getElementById('itemCategoryFilter').addEventListener('change', renderItems);
+            document.getElementById('classTypeFilter').addEventListener('change', renderClasses);
+
+            function updateTierButtonsUI() {
+                document.querySelectorAll('.tier-btn').forEach(btn => {
+                    const isActive = btn.dataset.tier === activeItemTier;
+                    if (isActive) {
+                        btn.classList.add('ring-2', 'ring-offset-1', 'ring-slate-800', 'dark:ring-amber-400');
+                    } else {
+                        btn.classList.remove('ring-2', 'ring-offset-1', 'ring-slate-800', 'dark:ring-amber-400');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.tier-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeItemTier = btn.dataset.tier;
+                    updateTierButtonsUI();
+                    renderItems();
+                });
+            });
+
+            document.querySelectorAll('.patch-cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activePatchCategory = btn.dataset.patchCat;
+                    document.querySelectorAll('.patch-cat-btn').forEach(b => {
+                        b.className = 'patch-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-700';
+                    });
+                    btn.className = 'patch-cat-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-white dark:bg-amber-500 dark:text-slate-950';
+                    renderUpdates();
+                });
+            });
+
+            // Toggle Daftar Isi (Table of Contents)
+            const toggleTocBtn = document.getElementById('toggleTocBtn');
+            const tocList = document.getElementById('tocList');
+            toggleTocBtn.addEventListener('click', () => {
+                const isHidden = tocList.classList.toggle('hidden');
+                toggleTocBtn.textContent = isHidden ? '[tampilkan]' : '[sembunyikan]';
+            });
+
+            // Drawer Sidebar Mobile
+            const leftSidebar = document.getElementById('leftSidebar');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+            function openMobileSidebar() {
+                leftSidebar.classList.remove('-translate-x-full');
+                sidebarBackdrop.classList.remove('hidden');
+            }
+
+            function closeMobileSidebar() {
+                leftSidebar.classList.add('-translate-x-full');
+                sidebarBackdrop.classList.add('hidden');
+            }
+
+            document.getElementById('mobileMenuBtn').addEventListener('click', openMobileSidebar);
+            document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+            sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', closeMobileSidebar);
+            });
+
+            // Salin Tautan Artikel (menggunakan document.execCommand sesuai standar aman)
+            document.getElementById('copyWikiLinkBtn').addEventListener('click', () => {
+                const tempInput = document.createElement('input');
+                tempInput.value = window.location.href;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Tautan artikel BDM Wiki berhasil disalin ke clipboard!');
+                } catch (err) {
+                    showToast('Tidak dapat menyalin tautan secara otomatis.');
+                }
+                document.body.removeChild(tempInput);
+                closeMobileSidebar();
+            });
+
+            // =================================================================
+            // 8. MODAL EDITOR WIKI INTERAKTIF (LOCALSTORAGE)
+            // =================================================================
+
+            const wikiEditorModal = document.getElementById('wikiEditorModal');
+            const formAddUpdate = document.getElementById('formAddUpdate');
+            const formAddItem = document.getElementById('formAddItem');
+            const formAddRegion = document.getElementById('formAddRegion');
+
+            // Set tanggal default hari ini pada form update
+            formAddUpdate.querySelector('input[name="date"]').valueAsDate = new Date();
+
+            function openEditorModal(defaultTab = 'update') {
+                wikiEditorModal.classList.remove('hidden');
+                switchEditorTab(defaultTab);
+                closeMobileSidebar();
+            }
+
+            function closeEditorModal() {
+                wikiEditorModal.classList.add('hidden');
+            }
+
+            function switchEditorTab(tabName) {
+                document.querySelectorAll('.editor-tab-btn').forEach(btn => {
+                    const active = btn.dataset.editorTab === tabName;
+                    btn.className = active
+                        ? 'editor-tab-btn active px-3 py-2 text-xs font-semibold border-b-2 border-wiki-link dark:border-amber-500 text-wiki-link dark:text-amber-400'
+                        : 'editor-tab-btn px-3 py-2 text-xs font-semibold border-b-2 border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200';
+                });
+
+                formAddUpdate.classList.toggle('hidden', tabName !== 'update');
+                formAddItem.classList.toggle('hidden', tabName !== 'item');
+                formAddRegion.classList.toggle('hidden', tabName !== 'region');
+            }
+
+            document.getElementById('openEditorBtnHeader').addEventListener('click', () => openEditorModal('update'));
+            document.getElementById('openEditorBtnSection').addEventListener('click', () => openEditorModal('update'));
+            document.getElementById('sidebarAddBtn').addEventListener('click', () => openEditorModal('update'));
+            document.getElementById('editArticleTabBtn').addEventListener('click', () => openEditorModal('item'));
+            document.getElementById('closeEditorModalBtn').addEventListener('click', closeEditorModal);
+
+            document.querySelectorAll('.close-modal-trigger').forEach(btn => {
+                btn.addEventListener('click', closeEditorModal);
+            });
+
+            document.querySelectorAll('.editor-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchEditorTab(btn.dataset.editorTab));
+            });
+
+            // Submit Form 1: Catatan Update Baru
+            formAddUpdate.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fd = new FormData(formAddUpdate);
+                const newUpdate = {
+                    id: 'upd-' + Date.now(),
+                    title: fd.get('title').toString().trim(),
+                    date: fd.get('date').toString(),
+                    category: fd.get('category').toString(),
+                    summary: fd.get('summary').toString().trim(),
+                    isCustom: true
+                };
+                customUpdates.unshift(newUpdate);
+                saveToStorage(STORAGE_KEYS.CUSTOM_UPDATES, customUpdates);
+                renderUpdates();
+                formAddUpdate.reset();
+                formAddUpdate.querySelector('input[name="date"]').valueAsDate = new Date();
+                closeEditorModal();
+                showToast('Catatan Update baru berhasil ditambahkan ke Wiki!');
+            });
+
+            // Submit Form 2: Item / Equipment Baru
+            formAddItem.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fd = new FormData(formAddItem);
+                const newItem = {
+                    id: 'item-' + Date.now(),
+                    name: fd.get('name').toString().trim(),
+                    category: fd.get('category').toString(),
+                    tier: fd.get('tier').toString(),
+                    description: fd.get('description').toString().trim(),
+                    obtain: fd.get('obtain').toString().trim(),
+                    isCustom: true
+                };
+                customItems.unshift(newItem);
+                saveToStorage(STORAGE_KEYS.CUSTOM_ITEMS, customItems);
+                renderItems();
+                formAddItem.reset();
+                closeEditorModal();
+                showToast(`Item "${newItem.name}" berhasil ditambahkan ke Database!`);
+            });
+
+            // Submit Form 3: Wilayah Baru
+            formAddRegion.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fd = new FormData(formAddRegion);
+                const newRegion = {
+                    id: 'reg-' + Date.now(),
+                    name: fd.get('name').toString().trim(),
+                    tierGroup: 'endgame',
+                    cpRange: fd.get('cpRange').toString().trim(),
+                    cities: fd.get('cities').toString().trim(),
+                    bosses: fd.get('bosses').toString().trim(),
+                    description: fd.get('description').toString().trim(),
+                    isCustom: true
+                };
+                customRegions.push(newRegion);
+                saveToStorage(STORAGE_KEYS.CUSTOM_REGIONS, customRegions);
+                renderRegions();
+                formAddRegion.reset();
+                closeEditorModal();
+                showToast(`Wilayah "${newRegion.name}" berhasil ditambahkan ke Peta Dunia!`);
+            });
+
+            // Modal Konfirmasi Reset Data Komunitas
+            const confirmModal = document.getElementById('confirmModal');
+            document.getElementById('resetCustomDataBtn').addEventListener('click', () => {
+                closeMobileSidebar();
+                confirmModal.classList.remove('hidden');
+            });
+            document.getElementById('cancelResetBtn').addEventListener('click', () => {
+                confirmModal.classList.add('hidden');
+            });
+            document.getElementById('confirmResetBtn').addEventListener('click', () => {
+                customRegions = [];
+                customItems = [];
+                customUpdates = [];
+                localStorage.removeItem(STORAGE_KEYS.CUSTOM_REGIONS);
+                localStorage.removeItem(STORAGE_KEYS.CUSTOM_ITEMS);
+                localStorage.removeItem(STORAGE_KEYS.CUSTOM_UPDATES);
+                renderRegions();
+                renderItems();
+                renderUpdates();
+                confirmModal.classList.add('hidden');
+                showToast('Data komunitas direset. Wiki kembali ke versi standar.');
+            });
+
+            // =================================================================
+            // 9. INISIALISASI AWAL HALAMAN
+            // =================================================================
+            renderMechanics();
+            renderRegions();
+            renderItems();
+            renderClasses();
+            renderBosses();
+            renderUpdates();
+            updateTierButtonsUI();
+        })();
+    </script>
+</body>
+</html>
